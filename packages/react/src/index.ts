@@ -1,3 +1,3 @@
-console.log('ok')
+import {} from '@ignite-ui/tokens'
 
-import {} from "@ignite-ui/tokens"
+console.log('ok')
