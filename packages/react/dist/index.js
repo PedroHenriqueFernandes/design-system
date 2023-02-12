@@ -71,6 +71,9 @@ __export(src_exports, {
 });
 module.exports = __toCommonJS(src_exports);
 
+// src/styles/index.ts
+var import_react = require("@stitches/react");
+
 // ../tokens/dist/index.mjs
 var colors = {
   white: "#FFF",
@@ -145,7 +148,6 @@ var lineHeights = {
 };
 
 // src/styles/index.ts
-var import_react = require("@stitches/react");
 var {
   styled,
   css,

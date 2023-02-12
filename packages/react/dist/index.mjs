@@ -30,6 +30,9 @@ var __objRest = (source, exclude) => {
   return target;
 };
 
+// src/styles/index.ts
+import { createStitches, defaultThemeMap } from "@stitches/react";
+
 // ../tokens/dist/index.mjs
 var colors = {
   white: "#FFF",
@@ -104,7 +107,6 @@ var lineHeights = {
 };
 
 // src/styles/index.ts
-import { createStitches, defaultThemeMap } from "@stitches/react";
 var {
   styled,
   css,
