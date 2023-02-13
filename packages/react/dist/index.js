@@ -67,7 +67,9 @@ __export(src_exports, {
   MultiStep: () => MultiStep,
   Text: () => Text,
   TextArea: () => TextArea,
-  TextInput: () => TextInput
+  TextInput: () => TextInput,
+  Toast: () => Toast2,
+  Tooltip: () => Tooltip2
 });
 module.exports = __toCommonJS(src_exports);
 
@@ -529,6 +531,193 @@ function MultiStep({ size, currentStep = 1 }) {
   ] });
 }
 MultiStep.displayName = "MultiStep";
+
+// src/components/Tooltip/styles.ts
+var Tooltip = __toESM(require("@radix-ui/react-tooltip"));
+var TooltipProvider = styled(Tooltip.Provider, {});
+var TooltipContainer = styled(Tooltip.Root, {});
+var TooltipContent = styled(Tooltip.Content, {
+  borderRadius: "5px",
+  padding: "$3 $4",
+  fontSize: "$sm",
+  lineHeight: "$short",
+  color: "$gray100",
+  backgroundColor: "$gray900",
+  userSelect: "none",
+  fontFamily: "$default"
+});
+var TooltipArrow = styled(Tooltip.Arrow, {
+  fill: "$gray900"
+});
+var TooltipTrigger = styled(Tooltip.Trigger, {});
+var TooltipPortal = styled(Tooltip.Portal, {});
+
+// src/components/Tooltip/index.tsx
+var import_jsx_runtime5 = require("react/jsx-runtime");
+function Tooltip2(props) {
+  const dateFormatted = props.date.toLocaleDateString("pt-BR", {
+    month: "long",
+    day: "numeric"
+  });
+  const day = dateFormatted.split(" ")[0];
+  const available = props.isAvailable ? "Dispon\xEDvel" : "Indispon\xEDvel";
+  return /* @__PURE__ */ (0, import_jsx_runtime5.jsx)(TooltipProvider, { children: /* @__PURE__ */ (0, import_jsx_runtime5.jsxs)(TooltipContainer, __spreadProps(__spreadValues({}, props), { children: [
+    /* @__PURE__ */ (0, import_jsx_runtime5.jsx)(TooltipTrigger, { asChild: true, children: /* @__PURE__ */ (0, import_jsx_runtime5.jsx)(Text, { size: "sm", children: day }) }),
+    /* @__PURE__ */ (0, import_jsx_runtime5.jsx)(TooltipPortal, { children: /* @__PURE__ */ (0, import_jsx_runtime5.jsxs)(TooltipContent, { sideOffset: 5, children: [
+      dateFormatted,
+      " - ",
+      available,
+      /* @__PURE__ */ (0, import_jsx_runtime5.jsx)(TooltipArrow, { className: "TooltipArrow" })
+    ] }) })
+  ] })) });
+}
+
+// src/components/Toast/index.tsx
+var import_react2 = require("react");
+
+// src/components/Toast/styles.ts
+var Toast = __toESM(require("@radix-ui/react-toast"));
+var ToastProvider = styled(Toast.Provider, {});
+var hide = keyframes({
+  from: {
+    opacity: 1
+  },
+  to: {
+    opacity: 0
+  }
+});
+var slideIn2 = keyframes({
+  from: {
+    transform: "translateX(calc(100% + var(--viewport-padding)))"
+  },
+  to: {
+    transform: "translateX(0)"
+  }
+});
+var swipeOut = keyframes({
+  from: {
+    transform: "translateX(var(--radix-toast-swipe-end-x))"
+  },
+  to: {
+    transform: "translateX(calc(100% + var(--viewport-padding)))"
+  }
+});
+var ToastRoot = styled(Toast.Root, {
+  borderRadius: "5px",
+  backgroundColor: "$ignite500",
+  width: "$80",
+  padding: "$3 $5",
+  display: "flex",
+  flexDirection: "column",
+  alignItems: "flex-start",
+  justifyContent: "center",
+  position: "relative",
+  '&[data-state="open"]': {
+    animation: `${slideIn2} 150ms cubic-bezier(0.16, 1, 0.3, 1)`
+  },
+  '&[data-state="closed"]': {
+    animation: `${hide} 100ms ease-in`
+  },
+  '&[data-swipe="move"]': {
+    transform: "translate(x) 150ms cubic-bezier(0.16, 1, 0.3, 1)"
+  },
+  '&[data-swipe="cancel"]': {
+    transform: "translate(0) 150ms cubic-bezier(0.16, 1, 0.3, 1)",
+    animation: "transform 200ms ease-out"
+  },
+  '&[data-swipe="end"]': {
+    animation: `${swipeOut} 100ms ease-ou;`
+  }
+});
+var ToastTitle = styled(Toast.Title, {
+  fontFamily: "$default",
+  fontSize: "$xl",
+  fontWeight: "$bold",
+  color: "$white",
+  lineHeight: "$base"
+});
+var ToastDescription = styled(Toast.Description, {
+  fontFamily: "$default",
+  fontSize: "$sm",
+  fontWeight: "$normal",
+  color: "$gray200",
+  lineHeight: "$base"
+});
+var ToastAction = styled(Toast.Action, {
+  position: "absolute",
+  top: "$4",
+  right: "$4",
+  width: "20px",
+  height: "20px",
+  svg: {
+    fill: "$gray200"
+  }
+});
+var ToastClose = styled(Toast.Close, {
+  position: "absolute",
+  top: "$4",
+  right: "$4",
+  width: "20px",
+  height: "20px",
+  svg: {
+    fill: "$gray200"
+  }
+});
+var ToastViewPort = styled(Toast.Viewport, {
+  position: "fixed",
+  bottom: "$8",
+  right: "$8",
+  display: "flex",
+  width: "$80",
+  height: "$20",
+  listStyle: "none",
+  maxWidth: "100vw"
+});
+
+// src/components/Toast/index.tsx
+var import_phosphor_react3 = require("phosphor-react");
+var import_jsx_runtime6 = require("react/jsx-runtime");
+function Toast2() {
+  const [open, setOpen] = (0, import_react2.useState)(false);
+  const eventDateRef = (0, import_react2.useRef)(/* @__PURE__ */ new Date());
+  const timerRef = (0, import_react2.useRef)(0);
+  const dateFormatted = (/* @__PURE__ */ new Date()).toLocaleString("pt-BR", {
+    weekday: "long",
+    day: "numeric",
+    month: "long",
+    year: "numeric"
+  });
+  (0, import_react2.useEffect)(() => {
+    return () => clearTimeout(timerRef.current);
+  }, []);
+  function oneWeekAway() {
+    const now = /* @__PURE__ */ new Date();
+    const inOneWeek = now.setDate(now.getDate() + 7);
+    return new Date(inOneWeek);
+  }
+  return /* @__PURE__ */ (0, import_jsx_runtime6.jsxs)(ToastProvider, { children: [
+    /* @__PURE__ */ (0, import_jsx_runtime6.jsx)(
+      Button,
+      {
+        onClick: () => {
+          setOpen(false);
+          window.clearTimeout(timerRef.current);
+          timerRef.current = window.setTimeout(() => {
+            eventDateRef.current = oneWeekAway();
+            setOpen(true);
+          }, 100);
+        },
+        children: /* @__PURE__ */ (0, import_jsx_runtime6.jsx)(Text, { children: "Open Toast" })
+      }
+    ),
+    /* @__PURE__ */ (0, import_jsx_runtime6.jsxs)(ToastRoot, { open, onOpenChange: setOpen, children: [
+      /* @__PURE__ */ (0, import_jsx_runtime6.jsx)(ToastTitle, { children: "Agendamento realizado" }),
+      /* @__PURE__ */ (0, import_jsx_runtime6.jsx)(ToastDescription, { children: dateFormatted }),
+      /* @__PURE__ */ (0, import_jsx_runtime6.jsx)(ToastClose, { asChild: true, children: /* @__PURE__ */ (0, import_jsx_runtime6.jsx)(import_phosphor_react3.X, { size: 20 }) })
+    ] }),
+    /* @__PURE__ */ (0, import_jsx_runtime6.jsx)(ToastViewPort, {})
+  ] });
+}
 // Annotate the CommonJS export names for ESM import in node:
 0 && (module.exports = {
   Avatar,
@@ -539,5 +728,7 @@ MultiStep.displayName = "MultiStep";
   MultiStep,
   Text,
   TextArea,
-  TextInput
+  TextInput,
+  Toast,
+  Tooltip
 });

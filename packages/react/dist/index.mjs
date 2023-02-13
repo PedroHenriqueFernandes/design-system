@@ -488,6 +488,193 @@ function MultiStep({ size, currentStep = 1 }) {
   ] });
 }
 MultiStep.displayName = "MultiStep";
+
+// src/components/Tooltip/styles.ts
+import * as Tooltip from "@radix-ui/react-tooltip";
+var TooltipProvider = styled(Tooltip.Provider, {});
+var TooltipContainer = styled(Tooltip.Root, {});
+var TooltipContent = styled(Tooltip.Content, {
+  borderRadius: "5px",
+  padding: "$3 $4",
+  fontSize: "$sm",
+  lineHeight: "$short",
+  color: "$gray100",
+  backgroundColor: "$gray900",
+  userSelect: "none",
+  fontFamily: "$default"
+});
+var TooltipArrow = styled(Tooltip.Arrow, {
+  fill: "$gray900"
+});
+var TooltipTrigger = styled(Tooltip.Trigger, {});
+var TooltipPortal = styled(Tooltip.Portal, {});
+
+// src/components/Tooltip/index.tsx
+import { jsx as jsx5, jsxs as jsxs4 } from "react/jsx-runtime";
+function Tooltip2(props) {
+  const dateFormatted = props.date.toLocaleDateString("pt-BR", {
+    month: "long",
+    day: "numeric"
+  });
+  const day = dateFormatted.split(" ")[0];
+  const available = props.isAvailable ? "Dispon\xEDvel" : "Indispon\xEDvel";
+  return /* @__PURE__ */ jsx5(TooltipProvider, { children: /* @__PURE__ */ jsxs4(TooltipContainer, __spreadProps(__spreadValues({}, props), { children: [
+    /* @__PURE__ */ jsx5(TooltipTrigger, { asChild: true, children: /* @__PURE__ */ jsx5(Text, { size: "sm", children: day }) }),
+    /* @__PURE__ */ jsx5(TooltipPortal, { children: /* @__PURE__ */ jsxs4(TooltipContent, { sideOffset: 5, children: [
+      dateFormatted,
+      " - ",
+      available,
+      /* @__PURE__ */ jsx5(TooltipArrow, { className: "TooltipArrow" })
+    ] }) })
+  ] })) });
+}
+
+// src/components/Toast/index.tsx
+import { useEffect, useRef, useState } from "react";
+
+// src/components/Toast/styles.ts
+import * as Toast from "@radix-ui/react-toast";
+var ToastProvider = styled(Toast.Provider, {});
+var hide = keyframes({
+  from: {
+    opacity: 1
+  },
+  to: {
+    opacity: 0
+  }
+});
+var slideIn2 = keyframes({
+  from: {
+    transform: "translateX(calc(100% + var(--viewport-padding)))"
+  },
+  to: {
+    transform: "translateX(0)"
+  }
+});
+var swipeOut = keyframes({
+  from: {
+    transform: "translateX(var(--radix-toast-swipe-end-x))"
+  },
+  to: {
+    transform: "translateX(calc(100% + var(--viewport-padding)))"
+  }
+});
+var ToastRoot = styled(Toast.Root, {
+  borderRadius: "5px",
+  backgroundColor: "$ignite500",
+  width: "$80",
+  padding: "$3 $5",
+  display: "flex",
+  flexDirection: "column",
+  alignItems: "flex-start",
+  justifyContent: "center",
+  position: "relative",
+  '&[data-state="open"]': {
+    animation: `${slideIn2} 150ms cubic-bezier(0.16, 1, 0.3, 1)`
+  },
+  '&[data-state="closed"]': {
+    animation: `${hide} 100ms ease-in`
+  },
+  '&[data-swipe="move"]': {
+    transform: "translate(x) 150ms cubic-bezier(0.16, 1, 0.3, 1)"
+  },
+  '&[data-swipe="cancel"]': {
+    transform: "translate(0) 150ms cubic-bezier(0.16, 1, 0.3, 1)",
+    animation: "transform 200ms ease-out"
+  },
+  '&[data-swipe="end"]': {
+    animation: `${swipeOut} 100ms ease-ou;`
+  }
+});
+var ToastTitle = styled(Toast.Title, {
+  fontFamily: "$default",
+  fontSize: "$xl",
+  fontWeight: "$bold",
+  color: "$white",
+  lineHeight: "$base"
+});
+var ToastDescription = styled(Toast.Description, {
+  fontFamily: "$default",
+  fontSize: "$sm",
+  fontWeight: "$normal",
+  color: "$gray200",
+  lineHeight: "$base"
+});
+var ToastAction = styled(Toast.Action, {
+  position: "absolute",
+  top: "$4",
+  right: "$4",
+  width: "20px",
+  height: "20px",
+  svg: {
+    fill: "$gray200"
+  }
+});
+var ToastClose = styled(Toast.Close, {
+  position: "absolute",
+  top: "$4",
+  right: "$4",
+  width: "20px",
+  height: "20px",
+  svg: {
+    fill: "$gray200"
+  }
+});
+var ToastViewPort = styled(Toast.Viewport, {
+  position: "fixed",
+  bottom: "$8",
+  right: "$8",
+  display: "flex",
+  width: "$80",
+  height: "$20",
+  listStyle: "none",
+  maxWidth: "100vw"
+});
+
+// src/components/Toast/index.tsx
+import { X } from "phosphor-react";
+import { jsx as jsx6, jsxs as jsxs5 } from "react/jsx-runtime";
+function Toast2() {
+  const [open, setOpen] = useState(false);
+  const eventDateRef = useRef(/* @__PURE__ */ new Date());
+  const timerRef = useRef(0);
+  const dateFormatted = (/* @__PURE__ */ new Date()).toLocaleString("pt-BR", {
+    weekday: "long",
+    day: "numeric",
+    month: "long",
+    year: "numeric"
+  });
+  useEffect(() => {
+    return () => clearTimeout(timerRef.current);
+  }, []);
+  function oneWeekAway() {
+    const now = /* @__PURE__ */ new Date();
+    const inOneWeek = now.setDate(now.getDate() + 7);
+    return new Date(inOneWeek);
+  }
+  return /* @__PURE__ */ jsxs5(ToastProvider, { children: [
+    /* @__PURE__ */ jsx6(
+      Button,
+      {
+        onClick: () => {
+          setOpen(false);
+          window.clearTimeout(timerRef.current);
+          timerRef.current = window.setTimeout(() => {
+            eventDateRef.current = oneWeekAway();
+            setOpen(true);
+          }, 100);
+        },
+        children: /* @__PURE__ */ jsx6(Text, { children: "Open Toast" })
+      }
+    ),
+    /* @__PURE__ */ jsxs5(ToastRoot, { open, onOpenChange: setOpen, children: [
+      /* @__PURE__ */ jsx6(ToastTitle, { children: "Agendamento realizado" }),
+      /* @__PURE__ */ jsx6(ToastDescription, { children: dateFormatted }),
+      /* @__PURE__ */ jsx6(ToastClose, { asChild: true, children: /* @__PURE__ */ jsx6(X, { size: 20 }) })
+    ] }),
+    /* @__PURE__ */ jsx6(ToastViewPort, {})
+  ] });
+}
 export {
   Avatar2 as Avatar,
   Box,
@@ -497,5 +684,7 @@ export {
   MultiStep,
   Text,
   TextArea,
-  TextInput
+  TextInput,
+  Toast2 as Toast,
+  Tooltip2 as Tooltip
 };
