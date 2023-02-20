@@ -1,0 +1,2 @@
+import{A as r}from"./index-be6f9b3f.js";import"./index-43ec82a8.js";import"./es.object.get-own-property-descriptor-037fa860.js";import"./index-648f2948.js";import"./jsx-runtime-1becbe17.js";const i={title:"Data display/Avatar",component:r,args:{src:"https://github.com/PedroHenriqueFernandes.png",alt:"Pedro Henrique Fernandes"},argTypes:{src:{control:{type:"text"}}}},n={},p={args:{src:void 0}},c=["Primary","WithFallback"];export{n as Primary,p as WithFallback,c as __namedExportsOrder,i as default};
+//# sourceMappingURL=Avatar.stories-b336e1a3.js.map
